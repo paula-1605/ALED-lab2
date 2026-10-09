@@ -33,15 +33,27 @@ public class ForwardKinematics {
 	// Private helper method that implements the recursive algorithm
 	private static Node computePositions(Segment link, double baseX, double baseY, double accumulatedAngle) {
 		// TODO: Implemente este método
+		long startTime=System.nanoTime();
 		accumulatedAngle+=link.getAngle(); //sumo al ángulo acumulado que tengo el ángulo del nuevo segmento
 		double x= baseX + link.getLength()*Math.cos(accumulatedAngle); //calculo la coordenada x a partir de la fórmula dada
 		double y= baseY + link.getLength()*Math.sin(accumulatedAngle); //calculo la coordenada y a partir de la fórmula dada
 		Node node = new Node(x,y); //genero el nuevo nodo al que llego con las coordenadas calculadas previamente
 		
-		if(link.getChildren().isEmpty()) //caso base, si el nodo creado no tiene hijos devuelvo el nodo
+		if(link.getChildren().isEmpty()) { //caso base, si el nodo creado no tiene hijos devuelvo el nodo
+			long runningTime = System.nanoTime()- startTime;
+			System.out.println("Tiempo de computePositions para un segmento con "
+			+ link.getChildren().size() + " hijos: "
+			+ runningTime + " nanosegundos");
 			return node;
+		}
+		
 		for(Segment child: link.getChildren()) //si tiene hijos, recorro todos los segmentos hijos 
 			node.addChild(computePositions(child , x, y, accumulatedAngle)); //creo el nuevo nodo con sus caracterisitcas obtenidas tras la invocación del propio método y lo añado a la lsita de hijos
+		
+		long runningTime = System.nanoTime()- startTime;
+		System.out.println("Tiempo de computePositions para un segmento con "
+		+ link.getChildren().size() + " hijos: "
+		+ runningTime + " nanosegundos");
 		return node;
 	}
 	// este método genera una lista de nodos que leugo se representarán
