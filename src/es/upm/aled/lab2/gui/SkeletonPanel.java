@@ -57,11 +57,26 @@ public class SkeletonPanel extends JPanel {
 
 	private void drawSkeleton(Graphics g, double parentX, double parentY, Node node) {
 		// TODO: Ponga comentarios en este método
+		
+		// Las dos siguientes líneas se corresponden al código común donde
+		// - se dibuja un óvalo de cierto tamaño que representa el nodo
+		// - se dibuja una línea (segmento) que une este nodo con el nodo padre
+		
 		g.fillOval((int) node.getX() - 4, (int) node.getY() - 4, 8, 8);
 		g.drawLine((int) parentX, (int) parentY, (int) node.getX(), (int) node.getY());
+		
+		//El siguiente if representa el caso base
+		//Una vez pintado un nodo y su unión con el padre, si el nodo que acabamos 
+		//de representar no tiene hijos, el algoritmo recursivo ha terminado
+		
 		if (node.getChildren().size() == 0) {
 			return;
 		}
+		
+		// el bucle recorre todos los hijos, representándolos mediante la invocación
+		//  del propio método pasándole el nodo actual y el nodo hijo que 
+		//  quiero representar 
+		
 		for (Node child : node.getChildren()) {
 			drawSkeleton(g, node.getX(), node.getY(), child);
 		}
